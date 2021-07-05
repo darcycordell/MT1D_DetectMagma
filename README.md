@@ -6,8 +6,9 @@ Synthetic data and MATLAB scripts required to re-create plots for the figures.
 
 The primary scripts to run are:
 
-Figures_to_Plot.m
+Run_MCMC_JVGR.m: Code which reads model txt files, creates synthetic data, and runs MCMC inversion
+Figures_to_Plot.m: Re-creates plots for Figure 2, 3, 4, and 5.
 
-To run the script, open it in MATLAB and run each code block. See comments in scripts for more details.
+To run the scripts, open them in MATLAB and run each code block. See comments in scripts for more details.
 
-Other underlying functions are also included but these do not need to be edited or opened by the user. Functions: calc_fwd_1d, MAL, MAL_solve_phi, and manual_legend
+Other underlying functions are also included but these do not need to be edited or opened by the user.
