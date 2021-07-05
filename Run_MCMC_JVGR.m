@@ -17,7 +17,7 @@ FileName = 'geometry_1_err_005.txt';
     clear val
 
     if ~exist('freq_array','var')
-        freq_array = logspace(-3,2,20);
+        freq_array = logspace(-3,3,30);
     end
 
     [fwd]=calc_fwd_1d(model(:,1),model(:,2),freq_array,err);
