@@ -1,5 +1,5 @@
 clearvars
-geometrynum = 4;
+geometrynum = 2;
 % Load appropriate model
 fid = fopen(['geometry_',num2str(geometrynum),'_err_005.txt']);
 load(['geometry_',num2str(geometrynum),'_err_005_FRun02.mat']);
@@ -7,6 +7,12 @@ load(['geometry_',num2str(geometrynum),'_FRun02_MCMC_Output.mat']);
 
 if geometrynum ~=4
     load(['geometry_',num2str(geometrynum),'_FRun02_Occam.mat']);
+end
+
+if geometrynum == 1 || geometrynum == 2
+    nLayer = 2;
+elseif geometrynum == 3 || geometrynum == 4
+    nLayer = 3;
 end
 
 
@@ -26,9 +32,9 @@ rms(:,nanind) =[];
 %Find "good" walkers which converged to a well-mixed low rms
 target_rms = 1.5; %Play with this number
                   % Start large (e.g. 100) to see all walkers.
-ind = find(rms(:,200000)<=target_rms);
+ind = find(rms(:,burnin)<=target_rms);
 
-rhob = 1./MAL(1/1000,1/0.61,1.5,models(1:P.nL,:,:));
+rhob = 1./MAL(models(1:P.nL,:,:),1/1000,1/0.61,1.5);
 tic
 rhoa = zeros(length(freq_array),length(1:2:length(ind)),length(burnin:1000:S.nsteps));
 phia = zeros(size(rhoa));
@@ -90,14 +96,41 @@ end
 
 %% TABLE 1: SORT OUT STATISTICS FOR MODEL PARAMETERS
 
-[mler,mle_plusr,mle_minusr,~,~] = mle_calc(log10(rhob(2,ind,burnin:end)),0.1,1);
 
-[mled,mle_plusd,mle_minusd,~,~] = mle_calc(10.^(models(2*P.nL-2,ind,burnin:end)),0.1,1);
-[mlet,mle_plust,mle_minust,~,~] = mle_calc(10.^(models(2*P.nL-1,ind,burnin:end))-10.^(models(2*P.nL-2,ind,burnin:end)),0.1,25);
 
-[mlem,mle_plusm,mle_minusm,~,~] = mle_calc((models(P.nL-1,ind,burnin:end)),0.1,1);
+d1 = mv(log10(rhob(nLayer,ind,burnin:end)));
+d2 = mv(10.^(models(2*P.nL-2,ind,burnin:end)));
+d3 = (mv(log10(10.^(models(2*P.nL-1,ind,burnin:end))-10.^(models(2*P.nL-2,ind,burnin:end)))));
+d4 = mv(models(P.nL-1,ind,burnin:end));
 
-excel_table = [10^mler, 10^mle_minusr, 10^mle_plusr; mled, mle_minusd, mle_plusd; mlet, mle_minust, mle_plust; mlem, mle_minusm, mle_plusm];
+ind = find(d1<1.9);
+ind = find(d1<10000);
+
+[mler,mle_plusr,mle_minusr,~,~] = mle_calc(d1(ind),0.1,1);
+
+[mled,mle_plusd,mle_minusd,~,~] = mle_calc(d2(ind),0.1,1);
+[mlet,mle_plust,mle_minust,~,~] = mle_calc(d3(ind),0.1,1);
+
+[mlem,mle_plusm,mle_minusm,~,~] = mle_calc(d4(ind),0.1,1);
+
+% mler = mean(d1);
+% mle_plusr = mean(d1)+std(d1);
+% mle_minusr = mean(d1)-std(d1);
+% 
+% mled = mean(d2);
+% mle_plusd = mean(d2)+std(d2);
+% mle_minusd = mean(d2)-std(d2);
+% 
+% mlet = mean(d3);
+% mle_plust = mean(d3)+std(d3);
+% mle_minust = mean(d3)-std(d3);
+
+
+% mlem = median(d4);
+% mle_plusm = median(d4)+std(d4);
+% mle_minusm = median(d4)-std(d4);
+
+excel_table = [10^mler, 10^mle_minusr, 10^mle_plusr; mled, mle_minusd, mle_plusd; 10^mlet, 10^mle_minust, 10^mle_plust; mlem, mle_minusm, mle_plusm];
 
 excel_table(1,4) = occ.model(doccid);
 excel_table(2,4) = occ.depth(doccid);

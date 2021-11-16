@@ -3,7 +3,7 @@
 %% LOAD TXT FILE MODEL AND CREATE SYNTHETIC DATA
 close all; clearvars;
 
-FileName = 'geometry_1_err_005.txt';
+FileName = 'geometry_3_err_005.txt';
 
     [~,name,ext] = fileparts(FileName);
     OutputFileName = [name,'.mat'];
@@ -49,19 +49,19 @@ FileName = 'geometry_1_err_005.txt';
  % Likelihood---------------------------------
     lognormpdf=@(x,mu,sigma)(-0.5*((x-mu)./sigma).^2 - log(sqrt(2*pi).*sigma));
 
-    P.nL = 3 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
+    P.nL = 4 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
                 % logical for the data you are using
     P.nparams = 2*P.nL-1; %Number of model parameters
 
     % Sum the misfit to get the log likelihood probability (note the
     % normalization factor)
-    L.logLike=@(m)sum(lognormpdf(MTdata.Z,forwardmodel_rho_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end)),MTdata.Zerr));
+    L.logLike=@(m)sum(lognormpdf(MTdata.Z,forwardmodel_melt_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end)),MTdata.Zerr));
 
-    L.forward = @(m)forwardmodel_rho_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end));
+    L.forward = @(m)forwardmodel_melt_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end));
 
     % Define a function to compute the r.m.s.
     rms_fun = @(dobs,dpred,err)sqrt((1/length(dobs))*nansum(((dobs-dpred)./err).^2));
-    L.rms_funm = @(m)rms_fun(MTdata.Z,forwardmodel_rho_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end)),MTdata.Zerr);
+    L.rms_funm = @(m)rms_fun(MTdata.Z,forwardmodel_melt_z(MTdata.freq_array,m(1:P.nL),m(P.nL+1:end)),MTdata.Zerr);
 
     % Priors------------------------------------
     % Priors can be made very flexible. In this example, we use a simple upper
@@ -70,8 +70,8 @@ FileName = 'geometry_1_err_005.txt';
 
     %User inputs-------------------------------------------------------
     % Must define upper and lower boundaries on each model parameter
-    minrho = -2;
-    maxrho = 6;
+    minrho = 0;
+    maxrho = 1;
     mindepth = log10(50);
     maxdepth = log10(50000);
 
