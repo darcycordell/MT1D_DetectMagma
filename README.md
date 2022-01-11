@@ -15,4 +15,4 @@ To run the scripts, open them in MATLAB and run each code block. See comments in
 
 Other underlying functions are also included but these do not need to be edited or opened by the user.
 
-The scripts are under the very permissive MIT license. See LICENSE.txt file for details.
+The scripts are under the MIT license. See LICENSE.txt file for details.
