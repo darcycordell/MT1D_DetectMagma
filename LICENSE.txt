@@ -22,4 +22,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -----------------------------------------------------------------------------------
 
-The gwmcmc script is licensed under the MIT license by Aslak Grinsted. See here: https://github.com/grinsted/gwmcmc
+The original gwmcmc script is licensed under the MIT license by Aslak Grinsted. See here: https://github.com/grinsted/gwmcmc
