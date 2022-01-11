@@ -42,9 +42,9 @@ end
 
 
 N_max = 1000; %Maximum # of iterations (rarely need >10)
-epsilon = 10^-4; %Stopping criterion (rarely need melt fractions with greater precision than this)
+epsilon = 10^-5; %Stopping criterion (rarely need melt fractions with greater precision than this)
 x = zeros(N_max,1); %Initialize unknown
-x(1) = 0.5; %Starting guess is 0.5 just because 0 < phi < 1
+x(1) = 0.25; %Starting guess is 0.5 just because 0 < phi < 1
 
 i = 2;
 while 1   
@@ -76,7 +76,11 @@ while 1
         break
     end
 
+    %x(i)
+    
     i = i+1;
+    
+    
 
 end
 

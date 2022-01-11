@@ -1,7 +1,7 @@
 function [sig] = MAL(sigm,sigf,m,phi)
 % Solve Modified Archie's Law (Glover et al., 2000)
 %
-% Usage: sig = archie(phi, sigm, sigf, m)
+% Usage: sig = MAL(sigm, sigf, m, phi)
 %
 % Inputs:
 %       phi = volume fraction of more conductive material
