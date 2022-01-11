@@ -3,7 +3,7 @@
 %% LOAD TXT FILE MODEL AND CREATE SYNTHETIC DATA
 close all; clearvars;
 
-FileName = 'geometry_3_err_005.txt';
+FileName = 'geometry_6_err_005.txt';
 
     [~,name,ext] = fileparts(FileName);
     OutputFileName = [name,'.mat'];
@@ -15,6 +15,9 @@ FileName = 'geometry_3_err_005.txt';
     model = val(1:end-1,:);
     err = val(end,1);
     clear val
+    
+    err = 0.05;
+    model(3,1) = model(2,1)+1000;
 
     if ~exist('freq_array','var')
         freq_array = logspace(-3,3,30);
@@ -44,12 +47,17 @@ FileName = 'geometry_3_err_005.txt';
     MTdata.is = is; % Site index (for synthetic data this is always 1)
 
     %save(OutputFileName,'MTdata')
+    
+    occ = OCCAM1D_no_menus(MTdata,true);
+    
+    subplot(2,2,[2 4]);
+    stairs([model(1,2); model(:,2); model(end,2)],[model(:,1); model(end,1); 10^6]/1000,'-k','LineWidth',2);
 
 %% DESIGN LIKELIHOOD AND PRIORS
  % Likelihood---------------------------------
     lognormpdf=@(x,mu,sigma)(-0.5*((x-mu)./sigma).^2 - log(sqrt(2*pi).*sigma));
 
-    P.nL = 4 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
+    P.nL = 3 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
                 % logical for the data you are using
     P.nparams = 2*P.nL-1; %Number of model parameters
 
@@ -101,7 +109,7 @@ FileName = 'geometry_3_err_005.txt';
     S.SaveEvery = 10000000; %Save final data or not (0 = no saving; 1 = save data)
     S.verbose = true; %outputs to command window if verbose
 
-    S.nsteps = 50000; %The length of the Markov Chain for each Walker. 
+    S.nsteps = 500000; %The length of the Markov Chain for each Walker. 
                      %Common range for good convergence: 100,000 to 1,000,000
 
     % This parameter is more problem-specific and depends on the number of
@@ -182,4 +190,9 @@ while 1
 end
 
 %%
+save_mcmc_input_data(MTdata,occ,S,L,P,m0,rms0,count);
+%%
 [models, ~,rms] = gwmcmc_jvgr(m0,[P.logprior {L.logLike}],S.totcount ,L.rms_funm,S.alpha,S.adaptive,S.SaveEvery,S.verbose,'burnin',S.burnin,'stepsize',S.stepsize,'thinchain',S.thin);
+
+
+save_mcmc_output_data(models,rms,MTdata)

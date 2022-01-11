@@ -1,4 +1,4 @@
-function [sig] = MAL(phi,sigm,sigf,m)
+function [sig] = MAL(sigm,sigf,m,phi)
 % Solve Modified Archie's Law (Glover et al., 2000)
 %
 % Usage: sig = archie(phi, sigm, sigf, m)
@@ -11,10 +11,12 @@ function [sig] = MAL(phi,sigm,sigf,m)
 %
 %
 if sigf<=sigm
-    error('The volume fraction must be associated with the more conductive material. Try (1-phi) instead')
+    sigf = sigm;
+    disp('The volume fraction must be associated with the more conductive material. Try (1-phi) instead')
 end
 
 p = (log10(1-phi.^m))./(log10(1-phi));
 sig = sigf.*(phi).^m+ sigm.*(1-phi).^p;
+
 
 end

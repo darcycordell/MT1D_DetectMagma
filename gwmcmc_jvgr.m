@@ -301,7 +301,7 @@ for row=1:Nkeep
     
     if mod(row,SaveEvery)==0
         
-        save('MCMC_Output.mat','models','rms')
+        %save('MCMC_Output.mat','models','rms')
         
     end
 
