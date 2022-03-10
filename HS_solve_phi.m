@@ -1,4 +1,4 @@
-function [phi] = HS_solve_phi(rho_b,rho_h,rho_f)
+function [phi,phi2] = HS_solve_phi(rho_b,rho_h,rho_f)
 % Function which solves for melt fraction using HS+
 % given a known bulk resistivity, matrix resistivity, and fluid resistivity
 %
@@ -42,4 +42,10 @@ sigb = 1./rho_b;
 
 
 phi = (3*sigf.*(sigm-sigb))./(3*sigf.*(sigm-sigf+(1/3)*sigf)+sigm.*sigb-sigf.*sigm-sigb.*sigf);
+
+
+%phi2 = ((1-(sigb./sigf)).*(3*sigf)-3*sigf+3*sigm)./(3*sigm-3*sigf+(1-sigb./sigf).*(sigf-sigm));
+%phi2 = (sigm-sigb)./(sigm-sigf+(1/3)*(sigf-sigm-sigb+(sigb.*sigm)./sigf));
+phi2 = (sigm-sigb)./((2/3)*(sigm-sigf)+(1/3)*sigb*(sigm./sigf-1));
+
 

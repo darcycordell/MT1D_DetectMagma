@@ -19,4 +19,8 @@ phi2 = 1-phi1;
 sigplus = sigf + phi2./((1./(sigm-sigf))+(phi1./(3*sigf)));
 sigminus = sigm + phi1./((1./(sigm+sigf))+(phi2./(3*sigm)));
 
+
+%Alternate form of HS+ from Glover 2000
+%sigplus = (sigf).*(1-(3*(1-phi).*(sigf-sigm))./(3*sigf-phi*(sigf-sigm)));
+
 end
