@@ -18,5 +18,9 @@ end
 p = (log10(1-phi.^m))./(log10(1-phi));
 sig = sigf.*(phi).^m+ sigm.*(1-phi).^p;
 
+if phi == 1
+    sig = sigf;
+end
+
 
 end
