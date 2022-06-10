@@ -109,7 +109,7 @@ FileName = 'geometry_6_err_005.txt';
     S.SaveEvery = 10000000; %Save final data or not (0 = no saving; 1 = save data)
     S.verbose = true; %outputs to command window if verbose
 
-    S.nsteps = 500000; %The length of the Markov Chain for each Walker. 
+    S.nsteps = 50000; %The length of the Markov Chain for each Walker. 
                      %Common range for good convergence: 100,000 to 1,000,000
 
     % This parameter is more problem-specific and depends on the number of
@@ -194,5 +194,5 @@ save_mcmc_input_data(MTdata,occ,S,L,P,m0,rms0,count);
 %%
 [models, ~,rms] = gwmcmc_jvgr(m0,[P.logprior {L.logLike}],S.totcount ,L.rms_funm,S.alpha,S.adaptive,S.SaveEvery,S.verbose,'burnin',S.burnin,'stepsize',S.stepsize,'thinchain',S.thin);
 
-
+%%
 save_mcmc_output_data(models,rms,MTdata)

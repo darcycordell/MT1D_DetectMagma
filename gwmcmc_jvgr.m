@@ -1,4 +1,4 @@
-function [models,logP,rms,reject]=gwmcmc(minit,logPfuns,mccount,stats_fun,alpha,adaptive,SaveEvery,verbose,varargin)
+function [models,logP,rms,reject]=gwmcmc_jvgr(minit,logPfuns,mccount,stats_fun,alpha,adaptive,SaveEvery,verbose,varargin)
 %% Cascaded affine invariant ensemble MCMC sampler. "The MCMC hammer"
 %
 % GWMCMC is an implementation of the Goodman and Weare 2010 Affine
