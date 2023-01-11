@@ -48,7 +48,8 @@ FileName = 'geometry_6_err_005.txt';
 
     %save(OutputFileName,'MTdata')
     
-    occ = OCCAM1D_no_menus(MTdata,true);
+    %occ = OCCAM1D_no_menus(MTdata,true);
+    occ = OCCAM1D_adaptive(MTdata,true);
     
     subplot(2,2,[2 4]);
     stairs([model(1,2); model(:,2); model(end,2)],[model(:,1); model(end,1); 10^6]/1000,'-k','LineWidth',2);
@@ -57,7 +58,7 @@ FileName = 'geometry_6_err_005.txt';
  % Likelihood---------------------------------
     lognormpdf=@(x,mu,sigma)(-0.5*((x-mu)./sigma).^2 - log(sqrt(2*pi).*sigma));
 
-    P.nL = 3 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
+    P.nL = 4 ; % Number of layers (MCMC is fixed dimension) so you must edit this to be something which is 
                 % logical for the data you are using
     P.nparams = 2*P.nL-1; %Number of model parameters
 
@@ -81,7 +82,7 @@ FileName = 'geometry_6_err_005.txt';
     minrho = 0;
     maxrho = 1;
     mindepth = log10(50);
-    maxdepth = log10(50000);
+    maxdepth = log10(20000);
 
     %The thickness of each layer is restricted to be a function of depth
     % The ratio of each depth must be greater than this
