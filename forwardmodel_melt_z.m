@@ -13,7 +13,7 @@ function dpred = forwardmodel_melt_z(freq_array,phi,z)
 
 m=1.5; %Connectivity parameter
 sigf = 1/0.61; %fluid resistivity
-sigm = 1/1000; %matrix resistivity
+sigm = 1/2000; %matrix resistivity
 
 p = (log10(1-phi.^m)./(log10(1-phi)));
 res =  1./(sigf.*(phi).^m+ sigm*(1-phi).^p);
